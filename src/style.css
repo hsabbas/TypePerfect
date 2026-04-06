@@ -1,0 +1,219 @@
+:root {
+    --background-color: #EEEEEE;
+    --primary-color: #222222;
+    --secondary-color: #000;
+    --correct-color: #00CC55;
+    --incorrect-color: #CC0055;
+    --game-font-size: 4rem;
+    --stats-font-size: 16px;
+    --title-font-size: 2.5rem;
+    --help-font-size: 1.5rem;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    cursor: text;
+}
+
+body {
+    background-color: var(--background-color);
+    font-family: "Courier New", monospace;
+}
+
+#title {
+    margin: 2rem;
+    font-size: var(--title-font-size);
+    color: var(--primary-color);
+}
+
+#stats {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, calc(-50% - 8rem));
+    color: var(--primary-color);
+    font-size: var(--stats-font-size);
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 3rem;
+    transition: opacity 0.2s;
+    transition: width 0.3s;
+    opacity: 0;
+}
+
+.stat {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    gap: 1rem;
+}
+
+.stat.hidden {
+    display: none;
+}
+
+.stat-label {
+    font-weight: bold;
+}
+
+#typing-row {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 0;
+    right: 0;
+    height: calc(var(--game-font-size) * 1.3);
+    font-size: var(--game-font-size);
+}
+
+#input {
+    position: absolute;
+    font-size: var(--game-font-size);
+    color: var(--primary-color);
+    margin: 0;
+    padding: 0;
+    width: 50%;
+    left: 0;
+    resize: none;
+    border: none;
+    outline: none;
+    text-align: right;
+    background: transparent;
+    overflow: hidden;
+    white-space: nowrap;
+    caret-color: transparent;
+    z-index: 10;
+}
+
+#caret {
+    position: absolute;
+    font-size: var(--game-font-size);
+    color: transparent;
+    left: 50%;
+    z-index: -1;
+    white-space: pre;
+    animation: border-blink 1.5s step-end infinite;
+}
+
+#caret.bar {
+    border-left: 3px solid var(--primary-color);
+    animation: border-blink 1.5s step-end infinite;
+}
+
+#caret.underscore {
+    border-bottom: 5px inset var(--primary-color);
+    animation: border-blink 1.5s step-end infinite;
+}
+
+#caret.block {
+    background-color: var(--primary-color);
+    animation: background-blink 1.5s step-end infinite;
+}
+
+#caret.typing {
+    animation: none;
+}
+
+#letters-container {
+    position: absolute;
+    display: flex;
+    left: 50%;
+    top: 0;
+    margin: 0;
+    padding: 0;
+    white-space: nowrap;
+    overflow: visible;
+    transition-property: transform;
+    transition-duration: .1s;
+    transition-timing-function: ease-out;
+}
+
+#letters-container.paused {
+    transition: none;
+}
+
+#help {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateY(3rem);
+    color: var(--secondary-color);
+    font-size: var(--help-font-size);
+}
+
+.letter {
+    color: var(--secondary-color);
+    white-space: pre;
+}
+
+.untyped {
+    opacity: .8;
+}
+
+.correct {
+    color: var(--correct-color);
+}
+
+.incorrect {
+    color: var(--incorrect-color);
+}
+
+.extra {
+    color: var(--incorrect-color);
+    opacity: 0.6;
+}
+
+#letter.hidden {
+    visibility: hidden;
+}
+
+.hidden {
+    display: none;
+}
+
+.help {
+    font-size: var(--help-font-size);
+    white-space: pre;
+}
+
+.help-title {
+    color: var(--primary-color)
+}
+
+.help-line {
+    color: var(--secondary-color);
+}
+
+.output {
+    font-size: var(--help-font-size);
+    color: var(--secondary-color)
+}
+
+@keyframes border-blink {
+    from,
+    to {
+        border-color: transparent;
+    }
+
+    50% {
+        border-color: var(--primary-color);
+    }
+}
+
+@keyframes background-blink {
+    from,
+    to {
+        background: none;
+    }
+
+    50% {
+        background-color: var(--primary-color);
+    }
+}
