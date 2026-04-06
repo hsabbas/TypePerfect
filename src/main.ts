@@ -1,5 +1,5 @@
 import './style.css'
-import { setColor, setTheme, resetTheme, resetCurrentTheme, getThemeCode, getTheme, getColor } from './theme.ts';
+import { setColor, setTheme, resetTheme, resetCurrentTheme, getTheme, getColor } from './theme.ts';
 import { setFontSize, resetAllFonts, resetFont, getFontSize } from './font.ts'
 import { getCaret, getCaretMovement, setCaret, setCaretMovement } from './caret.ts';
 import { settings } from './settings.ts';
@@ -130,15 +130,6 @@ const addWords = (count: number) => {
         spaces.push(space);
         letterContainer.appendChild(space);
     }
-}
-
-const removeWords = (count: number) => {
-    for (let i = 0; i < count; i++) {
-        spaces[i].remove();
-        words[i].div.remove();
-    }
-    words = words.slice(count);
-    spaces = spaces.slice(count);
 }
 
 const setTime = (seconds: number) => {

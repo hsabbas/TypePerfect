@@ -1,4 +1,4 @@
-export { setColor, initTheme, setTheme, resetTheme, resetCurrentTheme, getThemeCode, getColor, getTheme };
+export { setColor, initTheme, setTheme, resetTheme, resetCurrentTheme, getColor, getTheme };
 import { saveSettings, settings, defaults, type Theme } from "./settings";
 
 type ColorFieldMap = Record<string, keyof Theme>;
@@ -105,10 +105,6 @@ const resetCurrentTheme = () => {
     updateUI();
     saveSettings();
     return true;
-}
-
-const getThemeCode = () => {
-
 }
 
 initTheme()
