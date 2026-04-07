@@ -117,6 +117,10 @@ body {
     animation: background-blink 1.5s step-end infinite;
 }
 
+#caret.none {
+    opacity: 0;
+}
+
 #caret.typing {
     animation: none;
 }

@@ -62,7 +62,7 @@ export const helpMessages: HelpMessages = {
         title: 'caret &lt;style&gt;',
         lines: [
             'Styles the caret',
-            'style: Either bar, underscore or block',
+            'style: Either bar, underscore, block, or none',
             'Example: caret underscore'
         ]
     },

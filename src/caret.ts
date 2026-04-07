@@ -84,7 +84,13 @@ const getCaretMovement = (): string => {
 }
 
 const setCaret = function (style: string): boolean {
-    if (style === 'bar' || style === 'underscore' || style === 'block') {
+    if (style === 'u') {
+        style = 'underscore';
+    }
+    if (style === 'n') {
+        style = 'none';
+    }
+    if (style === 'bar' || style === 'underscore' || style === 'block' || style === 'none') {
         caret.className = style;
         settings.caretStyle = style;
         saveSettings();

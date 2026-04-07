@@ -17,7 +17,7 @@ interface Settings {
     timeLimit: number
     slideSpeed: 'slow' | 'medium' | 'fast' | 'none'
     slideOnWord: boolean
-    caretStyle: 'bar' | 'underscore' | 'block'
+    caretStyle: 'bar' | 'underscore' | 'block' | 'none'
     light: Theme
     dark: Theme
     selectedTheme: 'light' | 'dark'
