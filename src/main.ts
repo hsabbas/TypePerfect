@@ -50,6 +50,13 @@ const init = () => {
     document.addEventListener('visibilitychange', () => {
         if (!document.hidden) input.focus();
     });
+
+    input.addEventListener('paste', (e) => {
+        if (gameState !== 'command') {
+            e.preventDefault();
+        }
+    });
+
     input.addEventListener('keydown', handleKeydown);
     input.addEventListener('selectionchange', moveCaretToEnd);
     hide(stats);
