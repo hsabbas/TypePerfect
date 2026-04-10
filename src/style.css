@@ -44,7 +44,6 @@ body {
     gap: 3rem;
     transition: opacity 0.2s;
     transition: width 0.3s;
-    opacity: 0;
 }
 
 .stat {
@@ -55,27 +54,25 @@ body {
     gap: 1rem;
 }
 
-.stat.hidden {
-    display: none;
-}
-
 .stat-label {
     font-weight: bold;
 }
 
 #typing-row {
     position: absolute;
+    display: flex;
+    align-items: center;
     top: 50%;
     transform: translateY(-50%);
     left: 0;
     right: 0;
-    height: calc(var(--game-font-size) * 1.3);
+    margin: 0;
+    padding: 0;
     font-size: var(--game-font-size);
 }
 
 #input {
-    position: absolute;
-    font-size: var(--game-font-size);
+    font: inherit;
     color: var(--primary-color);
     margin: 0;
     padding: 0;
@@ -92,19 +89,36 @@ body {
     z-index: 10;
 }
 
-#caret {
+#letters-container {
     position: absolute;
+    display: flex;
+    left: 50%;
+    top: 0;
+    margin: 0;
+    padding: 0;
+    white-space: nowrap;
+    overflow: visible;
+    transition-property: all;
+    transition-duration: .1s;
+    transition-timing-function: ease-out;
+}
+
+#letters-container.paused {
+    transition: none;
+}
+
+#caret {
     font-size: var(--game-font-size);
     color: transparent;
-    left: 50%;
+    margin: 0;
+    padding: 0;
     z-index: -1;
     white-space: pre;
-    animation: border-blink 1.5s step-end infinite;
 }
 
 #caret.bar {
     border-left: 3px solid var(--primary-color);
-    animation: border-blink 1.5s step-end infinite;
+    animation: border-blink 2s step-end infinite;
 }
 
 #caret.underscore {
@@ -123,24 +137,6 @@ body {
 
 #caret.typing {
     animation: none;
-}
-
-#letters-container {
-    position: absolute;
-    display: flex;
-    left: 50%;
-    top: 0;
-    margin: 0;
-    padding: 0;
-    white-space: nowrap;
-    overflow: visible;
-    transition-property: transform;
-    transition-duration: .1s;
-    transition-timing-function: ease-out;
-}
-
-#letters-container.paused {
-    transition: none;
 }
 
 #help {
@@ -174,21 +170,13 @@ body {
     opacity: 0.6;
 }
 
-#letter.hidden {
-    visibility: hidden;
-}
-
-.hidden {
-    display: none;
-}
-
-.help {
+#help {
     font-size: var(--help-font-size);
     white-space: pre;
 }
 
 .help-title {
-    color: var(--primary-color)
+    color: var(--primary-color);
 }
 
 .help-line {
@@ -197,7 +185,7 @@ body {
 
 .output {
     font-size: var(--help-font-size);
-    color: var(--secondary-color)
+    color: var(--secondary-color);
 }
 
 @keyframes border-blink {

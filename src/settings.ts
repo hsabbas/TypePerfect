@@ -47,7 +47,7 @@ export const defaults: Settings = {
     fontSizes: {
         gameFontSize: '4rem',
         statsFontSize: '12px',
-        titleFontSize: '2.5rem',
+        titleFontSize: '3.5rem',
         helpFontSize: '1rem',
     }
 }
