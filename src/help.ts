@@ -1,3 +1,7 @@
+import { hide, show } from "./utils";
+
+const help = document.getElementById('help') as HTMLElement;
+
 interface HelpMessage {
     title: string,
     lines: string[]
@@ -96,8 +100,24 @@ export const helpMessages: HelpMessages = {
             'slide [speed] [trigger] - Customize how the typing row slides',
             'reset &lt;theme|font&gt; - Reset settings',
             'help [command] - Show help',
-            '',
-            'Tip: Just type a number to quick start!'
         ]
     }
 };
+
+export const showHelp = (command: string) => {
+    let helpMessage = helpMessages[command]
+    if (!helpMessage) {
+        helpMessage = helpMessages['help'];
+    }
+
+    help.innerHTML = `<div class="help-title">${helpMessage.title}</div>`;
+    for (let line of helpMessage.lines) {
+        help.innerHTML += `<div class="help-line">${line}</div>`
+    }
+    show(help);
+}
+
+export const hideHelp = () => {
+    help.innerHTML = '';
+    hide(help);
+}
