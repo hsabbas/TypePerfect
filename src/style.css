@@ -4,10 +4,10 @@
     --secondary-color: #000;
     --correct-color: #00CC55;
     --incorrect-color: #CC0055;
-    --game-font-size: 4rem;
-    --stats-font-size: 16px;
-    --title-font-size: 2.5rem;
-    --help-font-size: 1.5rem;
+    --game-font-size: 64px;
+    --stats-font-size: 20px;
+    --title-font-size: 56px;
+    --help-font-size: 36px;
 }
 
 html,
@@ -33,15 +33,15 @@ body {
 
 #stats {
     position: absolute;
-    top: 50%;
+    top: 25%;
     left: 50%;
-    transform: translate(-50%, calc(-50% - 8rem));
+    transform: translate(-50%, calc(-50%));
     color: var(--primary-color);
     font-size: var(--stats-font-size);
     display: flex;
     flex-direction: row;
     justify-content: center;
-    gap: 3rem;
+    gap: 6rem;
     transition: opacity 0.2s;
     transition: width 0.3s;
 }
@@ -51,6 +51,7 @@ body {
     flex-direction: column;
     justify-content: center;
     text-align: center;
+    font-weight: bold;
     gap: 1rem;
 }
 
@@ -139,15 +140,6 @@ body {
     animation: none;
 }
 
-#help {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translateY(3rem);
-    color: var(--secondary-color);
-    font-size: var(--help-font-size);
-}
-
 .letter {
     color: var(--secondary-color);
     white-space: pre;
@@ -171,6 +163,11 @@ body {
 }
 
 #help {
+    position: absolute;
+    top: 75%;
+    left: 50%;
+    margin-left: 32px;
+    transform: translateY(-50%);
     font-size: var(--help-font-size);
     white-space: pre;
 }
@@ -181,11 +178,16 @@ body {
 
 .help-line {
     color: var(--secondary-color);
+    margin-top: 8px;
 }
 
 .output {
     font-size: var(--help-font-size);
     color: var(--secondary-color);
+}
+
+.hidden {
+    display: none;
 }
 
 @keyframes border-blink {

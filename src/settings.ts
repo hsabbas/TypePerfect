@@ -45,10 +45,10 @@ export const defaults: Settings = {
     },
     selectedTheme: 'dark',
     fontSizes: {
-        gameFontSize: '4rem',
-        statsFontSize: '12px',
-        titleFontSize: '3.5rem',
-        helpFontSize: '1rem',
+        gameFontSize: '64px',
+        statsFontSize: '20px',
+        titleFontSize: '56px',
+        helpFontSize: '24px',
     }
 }
 
