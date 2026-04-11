@@ -71,7 +71,6 @@ export const endGame = () => {
     show(input);
     input.value = '';
     gameState = 'command';
-    letterContainer.classList.remove('paused');
 }
 
 export const addWords = (count: number) => {
@@ -145,7 +144,6 @@ export const endWord = () => {
         return;
     }
 
-    letterContainer.classList.remove('paused');
     currentWord.correct = currentWord.word === input.value;
 
     if (currentWord.correct) {
@@ -173,7 +171,6 @@ export const clearCurrentWord = () => {
         currentWord.letters[i].innerText = currentWord.word[i];
         currentWord.letters[i].className = 'letter untyped';
     }
-    letterContainer.classList.remove('paused');
     shiftLetters();
 }
 
@@ -184,7 +181,6 @@ export const backspace = () => {
         currentWord.extra.at(-1)!.remove();
         currentWord.extra.pop();
     } else {
-        letterContainer.classList.remove('paused');
         currentWord.letters[inputText.length].textContent = currentWord.word[inputText.length];
         currentWord.letters[inputText.length].className = 'letter untyped';
     }
@@ -244,7 +240,6 @@ const update = () => {
         let index = currentWord.typed.length + i;
         let extra = index >= currentWord.word.length;
         if (extra) {
-            letterContainer.classList.add('paused');
             let extraLetter = document.createElement('span');
             extraLetter.className = 'letter extra incorrect';
             extraLetter.textContent = typed[index];
