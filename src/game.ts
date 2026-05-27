@@ -183,7 +183,7 @@ export const update = () => {
     for (let i = 0; i < newLetters; i++) {
         let index = typed[currentWord].length + i
         if (index < words[currentWord].length
-            && typed[currentWord][index] === words[currentWord][index]) {
+            && input.value[index] === words[currentWord][index]) {
             correctCharacters++
         }
         charactersTyped++
