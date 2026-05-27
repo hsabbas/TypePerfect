@@ -3,7 +3,6 @@ import { moveCaretToEnd } from './ui/ui.ts'
 import { goToNextCommand, goToPreviousCommand, runCommand } from './command.ts'
 import { body, input } from './ui/dom.ts'
 import { showTyping } from './ui/ui.ts'
-import { settings } from './settings.ts'
 
 const init = () => {
     input.focus()
