@@ -49,7 +49,7 @@ body {
 #stats.game-over {
     color: var(--primary-color);
     top: 50%;
-    font-size: calc(var(--game-font-size) * .75);
+    font-size: calc(var(--stats-font-size) * 1.5);
 }
 
 .stat {
