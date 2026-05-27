@@ -1,10 +1,9 @@
-import { backspace, clearCurrentWord, clearPreviousWord, endGame, endWord, gameState, goToPreviousWord } from './game.ts';
-import { hide, moveCaretToEnd, show } from './utils.ts';
-import { goToNextCommand, goToPreviousCommand, runCommand } from './command.ts';
-
-const body = document.querySelector('body') as HTMLElement;
-const stats = document.getElementById('stats') as HTMLElement;
-const input = document.getElementById('input') as HTMLTextAreaElement;
+import { backspace, backspaceWord, exitGame, endWord, gameState, update, endGameOver, startGame, resetGame } from './game.ts'
+import { moveCaretToEnd } from './ui/ui.ts'
+import { goToNextCommand, goToPreviousCommand, runCommand } from './command.ts'
+import { body, input } from './ui/dom.ts'
+import { showTyping } from './ui/ui.ts'
+import { settings } from './settings.ts'
 
 const init = () => {
     input.focus()
@@ -12,69 +11,74 @@ const init = () => {
         input.focus()
     })
     document.addEventListener('visibilitychange', () => {
-        if (!document.hidden) input.focus();
-    });
+        if (!document.hidden) input.focus()
+    })
 
     input.addEventListener('paste', (e) => {
         if (gameState !== 'command') {
-            e.preventDefault();
+            e.preventDefault()
         }
-    });
+    })
 
-    input.addEventListener('keydown', handleKeydown);
-    input.addEventListener('selectionchange', moveCaretToEnd);
-    hide(stats);
-    show(input);
+    document.addEventListener('keydown', handleKeydown)
+    input.addEventListener('selectionchange', moveCaretToEnd)
+    input.addEventListener('input', handleInput)
+}
+
+const handleInput = () => {
+    showTyping()
+    if (gameState === 'armed' || gameState === 'running') {
+        update()
+    }
 }
 
 const handleKeydown = (e: KeyboardEvent) => {
     switch (gameState) {
         case 'command':
             if (e.key === 'Enter') {
-                runCommand();
-                e.preventDefault();
+                runCommand()
+                e.preventDefault()
             }
             if (e.key === 'Escape') {
-                input.value = '';
+                input.value = ''
             }
             if (e.key === 'ArrowUp') {
-                goToPreviousCommand();
+                goToPreviousCommand()
             }
             if (e.key === 'ArrowDown') {
-                goToNextCommand();
+                goToNextCommand()
             }
-            break;
+            break
         case 'armed':
         case 'running':
             if (e.key === 'Enter') {
-                e.preventDefault();
+                e.preventDefault()
             }
             if (e.key === ' ') {
-                endWord();
-                e.preventDefault();
+                endWord()
+                e.preventDefault()
             }
             if (e.key === 'Escape') {
-                show(input);
-                endGame();
+                exitGame()
             }
             if (e.key === 'Backspace') {
-                e.preventDefault();
-                if (input.value.length === 0) {
-                    if (e.ctrlKey || e.altKey) {
-                        clearPreviousWord();
-                    } else {
-                        goToPreviousWord();
-                    }
-                    return;
-                }
-
+                e.preventDefault()
                 if (e.ctrlKey || e.altKey) {
-                    clearCurrentWord();
+                    backspaceWord()
                 } else {
-                    backspace();
+                    backspace()
                 }
             }
-            break;
+            break
+        case 'gameover':
+            if (e.key === 'Enter') {
+                resetGame()
+                e.preventDefault()
+            }
+            if (e.key === 'Escape') {
+                endGameOver()
+                e.preventDefault()
+            }
     }
 }
 

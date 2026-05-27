@@ -46,9 +46,9 @@ export const defaults: Settings = {
     selectedTheme: 'dark',
     fontSizes: {
         gameFontSize: '64px',
-        statsFontSize: '20px',
+        statsFontSize: '16px',
         titleFontSize: '56px',
-        helpFontSize: '24px',
+        helpFontSize: '16px',
     }
 }
 
@@ -56,7 +56,7 @@ export let settings: Settings = initSettings()
 
 function initSettings(): Settings {
     let settings: Settings
-    let storedSettingsStr = localStorage.getItem('settings');
+    let storedSettingsStr = localStorage.getItem('settings')
     if (storedSettingsStr) {
         const storedSettings = JSON.parse(storedSettingsStr)
         settings = {
@@ -66,14 +66,14 @@ function initSettings(): Settings {
     } else {
         settings = {...defaults}
         if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-            settings.selectedTheme = 'dark';
+            settings.selectedTheme = 'dark'
         } else {
-            settings.selectedTheme = 'light';
+            settings.selectedTheme = 'light'
         }
     }
     return settings
 }
 
 export function saveSettings() {
-    localStorage.setItem('settings', JSON.stringify(settings));
+    localStorage.setItem('settings', JSON.stringify(settings))
 }

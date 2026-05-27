@@ -6,46 +6,47 @@
 	<link rel="icon" type="image/png" href="/favicon.png" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<link rel="stylesheet" href="src/style.css">
-	<title>typeperfect</title>
+	<title>TypePerfect</title>
 </head>
 
 <body>
 	<header>
 		<h1 id="title">TypePerfect</h1>
 	</header>
-	<div id="stats">
+	<div id="stats" class="hidden">
 		<div class="stat">
 			<div class="stat-label">Time</div>
-			<div class="stat-value" id="time-left">--</div>
+			<div class="stat-value" id="time-left">&nbsp;</div>
 		</div>
 		<div class="stat">
 			<div class="stat-label">WPM</div>
-			<div class="stat-value" id="wpm">--</div>
+			<div class="stat-value" id="wpm">&nbsp;</div>
 		</div>
 		<div class="stat hidden">
 			<div class="stat-label">Words</div>
-			<div class="stat-value" id="words-typed">--</div>
+			<div class="stat-value" id="words-typed">&nbsp;</div>
 		</div>
 		<div class="stat hidden">
 			<div class="stat-label">Characters</div>
-			<div class="stat-value" id="characters">--</div>
+			<div class="stat-value" id="characters">&nbsp;</div>
 		</div>
 		<div class="stat hidden">
 			<div class="stat-label">Missed</div>
-			<div class="stat-value" id="missed">--</div>
+			<div class="stat-value" id="missed">&nbsp;</div>
 		</div>
 		<div class="stat">
 			<div class="stat-label">Accuracy</div>
-			<div class="stat-value" id="accuracy">--</div>
+			<div class="stat-value" id="accuracy">&nbsp;</div>
 		</div>
 	</div>
 	<div id="typing-row">
-		<textarea id="input" class="visible" autocorrect="off" autocomplete="off" autocapitalize="off"
+		<textarea id="input" autocorrect="off" autocomplete="off" autocapitalize="off"
 			spellcheck="false" rows="1"></textarea>
 		<div id="caret" class="underscore">&nbsp;</div>
-		<div id="letters-container"></div>
+		<div id="letters-container" class="hidden"></div>
 	</div>
-	<div id="help"></div>
+	<div id="output"></div>
+	<div id="seed"></div>
 </body>
 <script type="module" src="/src/main.ts"></script>
 </body>

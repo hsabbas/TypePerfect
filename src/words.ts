@@ -1,22 +1,35 @@
-export { generateWords }
+import { randomN } from "./rng"
 const wordBank = [
-    'the', 'be', 'to', 'of', 'and', 'a', 'in', 'that', 'have', 'I', 'it', 'for',
-    'not', 'on', 'with', 'he', 'as', 'you', 'do', 'at', 'this', 'but', 'his',
-    'by', 'from', 'they', 'we', 'say', 'her', 'she', 'or', 'an', 'will', 'my',
-    'one', 'all', 'would', 'there', 'their', 'what', 'so', 'up', 'out', 'if',
-    'about', 'who', 'get', 'which', 'go', 'me', 'when', 'make', 'can', 'like',
-    'time', 'no', 'just', 'him', 'know', 'take', 'people', 'into', 'year',
-    'your', 'good', 'some', 'could', 'them', 'see', 'other', 'than', 'then',
-    'now', 'look', 'only', 'come', 'its', 'over', 'think', 'also', 'back',
-    'after', 'use', 'two', 'how', 'our', 'work', 'first', 'well', 'way', 'even',
-    'new', 'want', 'because', 'any', 'these', 'give', 'day', 'most', 'us'
-];
+    "the", "be", "of", "and", "a", "to", "in", "he", "have", "it", "that",
+    "for", "they", "I", "with", "as", "not", "on", "she", "at", "by", "this",
+    "we", "you", "do", "but", "from", "or", "which", "one", "would", "all",
+    "will", "there", "say", "who", "make", "when", "can", "more", "if", "no",
+    "man", "out", "other", "so", "what", "time", "up", "go", "about", "than",
+    "into", "could", "state", "only", "new", "year", "some", "take", "come",
+    "these", "know", "see", "use", "get", "like", "then", "first", "any",
+    "work", "now", "may", "such", "give", "over", "think", "most", "even",
+    "find", "day", "also", "after", "way", "many", "must", "look", "before",
+    "great", "back", "through", "long", "where", "much", "should", "well",
+    "people", "down", "own", "just", "because", "good", "each", "those", "feel",
+    "seem", "how", "high", "too", "place", "little", "world", "very", "still",
+    "nation", "hand", "old", "life", "tell", "write", "become", "here", "show",
+    "house", "both", "between", "need", "mean", "call", "develop", "under",
+    "last", "right", "move", "thing", "general", "school", "never", "same",
+    "another", "begin", "while", "number", "part", "turn", "real", "leave",
+    "might", "want", "point", "form", "off", "child", "few", "small", "since",
+    "against", "ask", "late", "home", "interest", "large", "person", "end",
+    "open", "public", "follow", "during", "present", "without", "again", "hold",
+    "govern", "around", "possible", "head", "consider", "word", "program",
+    "problem", "however", "lead", "system", "set", "order", "eye", "plan",
+    "run", "keep", "face", "fact", "group", "play", "stand", "increase",
+    "early", "course", "change", "help", "line"
+]
 
-const generateWords = (count: number): string[] => {
-    let result = [];
+export const generateWords = (count: number): string[] => {
+    let result = []
     for (let i = 0; i < count; i++) {
-        const index = Math.floor(Math.random() * wordBank.length);
-        result.push(wordBank[index]);
+        const index = randomN(wordBank.length)
+        result.push(wordBank[index])
     }
-    return result;
+    return result
 }

@@ -5,9 +5,9 @@
     --correct-color: #00CC55;
     --incorrect-color: #CC0055;
     --game-font-size: 64px;
-    --stats-font-size: 20px;
+    --stats-font-size: 16px;
     --title-font-size: 56px;
-    --help-font-size: 36px;
+    --help-font-size: 16px;
 }
 
 html,
@@ -36,14 +36,20 @@ body {
     top: 25%;
     left: 50%;
     transform: translate(-50%, calc(-50%));
-    color: var(--primary-color);
+    color: var(--secondary-color);
     font-size: var(--stats-font-size);
     display: flex;
     flex-direction: row;
     justify-content: center;
     gap: 6rem;
-    transition: opacity 0.2s;
-    transition: width 0.3s;
+    opacity: 0;
+    transition: all .4s ease-in;
+}
+
+#stats.game-over {
+    color: var(--primary-color);
+    top: 50%;
+    font-size: calc(var(--game-font-size) * .75);
 }
 
 .stat {
@@ -51,12 +57,7 @@ body {
     flex-direction: column;
     justify-content: center;
     text-align: center;
-    font-weight: bold;
-    gap: 1rem;
-}
-
-.stat-label {
-    font-weight: bold;
+    gap: 2rem;
 }
 
 #typing-row {
@@ -75,7 +76,6 @@ body {
 #input {
     font: inherit;
     color: var(--primary-color);
-    margin: 0;
     padding: 0;
     width: 50%;
     left: 0;
@@ -95,17 +95,21 @@ body {
     display: flex;
     left: 50%;
     top: 0;
-    margin: 0;
     padding: 0;
     white-space: nowrap;
     overflow: visible;
     transition-property: all;
-    transition-duration: .1s;
+    transition-duration: .4s;
     transition-timing-function: ease-out;
 }
 
 #letters-container.paused {
     transition: none;
+}
+
+/* place the characters lower as if sitting on the bottom of the row.*/
+#input, #letters-container {
+    margin-top: calc(var(--game-font-size) * .2);
 }
 
 #caret {
@@ -162,31 +166,34 @@ body {
     opacity: 0.6;
 }
 
-#help {
+#output {
     position: absolute;
     top: 75%;
     left: 50%;
     margin-left: 32px;
     transform: translateY(-50%);
-    font-size: var(--help-font-size);
+    font-size: var(--ouput-font-size);
     white-space: pre;
 }
 
-.help-title {
+.output-title {
     color: var(--primary-color);
 }
 
-.help-line {
+.output-line {
     color: var(--secondary-color);
     margin-top: 8px;
 }
 
-.output {
-    font-size: var(--help-font-size);
-    color: var(--secondary-color);
+#seed {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    color: var(--secondary-color)
 }
 
-.hidden {
+.stat.hidden {
     display: none;
 }
 

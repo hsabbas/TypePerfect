@@ -1,6 +1,6 @@
-import { hide, show } from "./utils";
+import { hide, show } from "./ui/ui"
 
-const help = document.getElementById('help') as HTMLElement;
+const output = document.getElementById('output') as HTMLElement
 
 interface HelpMessage {
     title: string,
@@ -11,7 +11,7 @@ interface HelpMessages {
     [key: string]: HelpMessage
 }
 
-export const helpMessages: HelpMessages = {
+const helpMessages: HelpMessages = {
     'start': {
         title: '[start] [seconds]',
         lines: [
@@ -51,12 +51,13 @@ export const helpMessages: HelpMessages = {
         ]
     },
     'reset': {
-        title: 'reset &lt;theme|font&gt; [option]',
+        title: 'reset &lt;theme|font|seed&gt; [option]',
         lines: [
             'Reset settings to defaults',
             '',
             'reset theme [light|dark] - Reset theme to default colors',
             'reset font [area] - Reset font size to default',
+            'reset seed - Reset the seed for word generation',
             '',
             'Examples: reset theme dark',
             '          reset font'
@@ -81,6 +82,14 @@ export const helpMessages: HelpMessages = {
         ]
 
     },
+    'seed': {
+        title: 'seed &lt;seed&gt;',
+        lines: [
+            'Set the seed for word generation.',
+            'seed: The seed. It\'s a number. Not 0',
+            'Example: seed 420'
+        ]
+    },
     'help': {
         title: 'help [command]',
         lines: [
@@ -98,26 +107,32 @@ export const helpMessages: HelpMessages = {
             'font &lt;size&gt; - Change font size',
             'caret &lt;style&gt; - Choose a caret style',
             'slide [speed] [trigger] - Customize how the typing row slides',
-            'reset &lt;theme|font&gt; - Reset settings',
+            'seed &lt;seed&gt; - Set the seed for word generation',
+            'reset &lt;theme|font|seed&gt; - Reset settings',
             'help [command] - Show help',
         ]
     }
-};
+}
 
 export const showHelp = (command: string) => {
     let helpMessage = helpMessages[command]
     if (!helpMessage) {
-        helpMessage = helpMessages['help'];
+        helpMessage = helpMessages['help']
     }
 
-    help.innerHTML = `<div class="help-title">${helpMessage.title}</div>`;
+    output.innerHTML = `<div class="output-title">${helpMessage.title}</div>`
     for (let line of helpMessage.lines) {
-        help.innerHTML += `<div class="help-line">${line}</div>`
+        output.innerHTML += `<div class="output-line">${line}</div>`
     }
-    show(help);
+    show(output)
 }
 
-export const hideHelp = () => {
-    help.innerHTML = '';
-    hide(help);
+export const showOutput = (text: string) => {
+    output.innerHTML = `<div class="output-title">${text}</div>`
+    show(output)
+}
+
+export const clearOutput = () => {
+    output.innerHTML = ''
+    hide(output)
 }

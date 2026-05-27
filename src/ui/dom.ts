@@ -1,0 +1,11 @@
+export const body = document.querySelector('body') as HTMLElement
+export const input = document.getElementById('input') as HTMLTextAreaElement
+export const stats = document.getElementById('stats') as HTMLElement
+export const timeStat = document.getElementById('time-left') as HTMLElement
+export const wordsStat = document.getElementById('words-typed') as HTMLElement
+export const wpmStat = document.getElementById('wpm') as HTMLElement
+export const accuracyStat = document.getElementById('accuracy') as HTMLElement
+export const letterContainer = document.getElementById('letters-container') as HTMLElement
+export const caret = document.getElementById('caret') as HTMLElement
+export const output = document.getElementById('output') as HTMLElement
+export const seedDisplay = document.getElementById('seed') as HTMLElement

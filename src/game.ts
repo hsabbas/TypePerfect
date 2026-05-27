@@ -1,287 +1,218 @@
-import { saveSettings, settings } from "./settings";
-import { show } from "./utils";
-import { generateWords } from "./words";
-
-const timeStat = document.getElementById('time-left') as HTMLElement;
-const wordsStat = document.getElementById('words-typed') as HTMLElement;
-const wpmStat = document.getElementById('wpm') as HTMLElement;
-const accuracyStat = document.getElementById('accuracy') as HTMLElement;
-const letterContainer = document.getElementById('letters-container') as HTMLElement;
-const input = document.getElementById('input') as HTMLTextAreaElement;
-const caret = document.getElementById('caret') as HTMLElement;
+import { input } from "./ui/dom"
+import { addWordElements, render, renderStats, resetRenderer } from "./renderer"
+import { resetRNG } from "./rng"
+import { saveSettings, settings } from "./settings"
+import { displayGame, exitGameOver, leaveGameDisplay, showGameOver } from "./ui/ui"
+import { generateWords } from "./words"
 
 export let gameState = 'command'
 
-interface Word {
-    word: string,
-    typed: string,
-    letters: HTMLElement[],
-    correct: boolean,
-    extra: HTMLElement[],
-    div: HTMLElement
-}
+export let timeLeft = 0
+let timerInterval: number | undefined = undefined
+let isComposing = false
 
-let timeLeft = 0;
-let timerInterval: number | undefined = undefined;
-let isComposing = false;
-let typingTimeout: number | undefined = undefined;
-
-let words: Word[] = [];
-let spaces: HTMLElement[] = [];
-let currentWord: Word;
-let currentWordInd = 0;
-let wordCount = 0;
-let charactersTyped = 0;
-let correctCharacters = 0;
-let spaceTaker = document.createElement('div');
+export let words: string[] = []
+export let typed: string[] = []
+export let correct: boolean[] = []
+export let currentWord = 0
+export let wordCount = 0
+export let charactersTyped = 0
+export let correctCharacters = 0
+export let wpm = 0
+export let accuracy = 0
 
 export const startGame = (seconds: number) => {
-    setTime(seconds);
-    timeLeft = seconds;
-    gameState = 'armed';
-    timeStat.textContent = String(timeLeft);
-    updateStats();
-    input.addEventListener('input', update);
-
-    spaceTaker.style.width = '0';
-    spaceTaker.style.opacity = '0';
-    letterContainer.appendChild(spaceTaker);
-    addWords(150);
-
-    currentWord = words[0];
-    shiftLetters();
+    setTime(seconds)
+    timeLeft = seconds
+    gameState = 'armed'
+    updateStats()
+    currentWord = 0
+    resetRNG()
+    addWords(150)
+    displayGame()
+    render()
 }
 
-export const endGame = () => {
+const endGame = () => {
+    gameState = 'gameover'
     if (timerInterval) {
-        clearInterval(timerInterval);
-        timerInterval = undefined;
+        clearInterval(timerInterval)
+        timerInterval = undefined
     }
-    input.removeEventListener('input', update);
-    input.removeEventListener('compositionstart', startComposition)
-    input.removeEventListener('compositionend', endComposition);
-    words = [];
-    spaces = [];
-    wordCount = 0;
-    letterContainer.innerHTML = '';
-    letterContainer.style.transform = 'none';
-    currentWordInd = 0;
-    charactersTyped = 0;
-    correctCharacters = 0;
-    show(input);
-    input.value = '';
-    gameState = 'command';
+    resetRenderer()
+    showGameOver()
 }
 
-export const addWords = (count: number) => {
-    let upcomingWords = generateWords(count);
-    for (let w = 0; w < upcomingWords.length; w++) {
-        let wordDiv = document.createElement('div');
-        wordDiv.className = 'word';
-        let word = upcomingWords[w];
-        let letters = [];
-        for (let l = 0; l < word.length; l++) {
-            let letter = document.createElement('span');
-            letter.className = 'letter untyped';
-            letter.textContent = word[l];
-            wordDiv.appendChild(letter);
-            letters.push(letter);
-        }
-        words.push({
-            word: word,
-            typed: '',
-            letters: letters,
-            correct: true,
-            extra: [],
-            div: wordDiv
-        })
-        letterContainer.appendChild(wordDiv);
+export const exitGame = () => {
+    gameState = 'command'
+    clearGame()
+    leaveGameDisplay()
+}
 
-        let space = document.createElement('span');
-        space.className = 'letter';
-        space.textContent = ' ';
-        spaces.push(space);
-        letterContainer.appendChild(space);
+export const resetGame = () => {
+    clearGame()
+    startGame(settings.timeLimit)
+}
+
+const clearGame = () => {
+    if (timerInterval) {
+        clearInterval(timerInterval)
+        timerInterval = undefined
     }
+    input.removeEventListener('compositionstart', startComposition)
+    input.removeEventListener('compositionend', endComposition)
+    words = []
+    typed = []
+    correct = []
+    wordCount = 0
+    charactersTyped = 0
+    correctCharacters = 0
+    wpm = 0
+    accuracy = 0
+    input.value = ''
+    resetRenderer()
+}
+
+export const endGameOver = () => {
+    gameState = 'command'
+    clearGame()
+    exitGameOver()
+}
+
+const addWords = (count: number) => {
+    let newWords = generateWords(count)
+    for (let word of newWords) {
+        words.push(word)
+        typed.push('')
+        correct.push(true)
+    }
+    addWordElements(newWords)
 }
 
 const removeWords = (count: number) => {
-    spaceTaker.style.width = `${words[count].letters[0].offsetLeft}px`;
-    for (let i = 0; i < count; i++) {
-        words[i].div.remove();
-        spaces[i].remove();
-    }
-    words = words.slice(count);
-    spaces = spaces.slice(count);
-    currentWordInd -= count;
+    words = words.slice(count)
+    currentWord -= count
 }
 
 export const setTime = (seconds: number): boolean => {
     if (isNaN(seconds)) {
-        return false;
-    }
-    settings.timeLimit = seconds;
-    saveSettings();
-    return true;
-}
-
-const shiftLetters = () => {
-    let currentLetter;
-    if (settings.slideOnWord) {
-        currentLetter = currentWord.letters[0];
-    } else if (currentWord.typed.length >= currentWord.word.length) {
-        currentLetter = spaces[currentWordInd];
-    } else {
-        currentLetter = currentWord.letters[currentWord.typed.length];
+        return false
     }
 
-    caret.textContent = currentLetter.textContent;
-    letterContainer.style.transform = `translateX(calc(-${currentLetter.offsetLeft}px))`;
+    seconds = Math.round(seconds)
+    settings.timeLimit = seconds
+    saveSettings()
+    return true
 }
 
 export const endWord = () => {
     if (input.value.trim() === '') {
-        return;
+        return
     }
 
-    currentWord.correct = currentWord.word === input.value;
+    correct[currentWord] = words[currentWord] === input.value
 
-    if (currentWord.correct) {
-        wordCount++;
+    if (correct[currentWord]) {
+        wordCount++
     }
-    input.value = '';
-    currentWordInd++;
-    currentWord = words[currentWordInd];
-    if (words.length - currentWordInd < 50) {
-        addWords(50);
-        removeWords(50);
+    input.value = ''
+    currentWord++
+    if (words.length - currentWord < 50) {
+        addWords(50)
+        removeWords(50)
     }
 
-    shiftLetters();
+    render()
 }
 
-export const clearCurrentWord = () => {
-    input.value = '';
-    currentWord.typed = '';
-    for (let i = 0; i < currentWord.extra.length; i++) {
-        currentWord.extra[i].remove();
+export const backspaceWord = () => {
+    if (input.value.length == 0) {
+        if (currentWord === 0 || correct[currentWord - 1]) {
+            return
+        }
+        currentWord--
     }
-    currentWord.extra = [];
-    for (let i = 0; i < currentWord.word.length; i++) {
-        currentWord.letters[i].innerText = currentWord.word[i];
-        currentWord.letters[i].className = 'letter untyped';
-    }
-    shiftLetters();
+
+    input.value = ''
+    typed[currentWord] = ''
+    render()
 }
 
 export const backspace = () => {
-    let inputText = input.value.slice(0, -1);
-    input.value = inputText;
-    if (currentWord.extra.length !== 0) {
-        currentWord.extra.at(-1)!.remove();
-        currentWord.extra.pop();
-    } else {
-        currentWord.letters[inputText.length].textContent = currentWord.word[inputText.length];
-        currentWord.letters[inputText.length].className = 'letter untyped';
+    if (input.value.length == 0) {
+        goToPreviousWord()
+        return
     }
-    currentWord.typed = inputText;
-    shiftLetters();
+
+    let inputText = input.value.slice(0, -1)
+    input.value = inputText
+    typed[currentWord] = inputText
+    render()
 }
 
-export const goToPreviousWord = () => {
-    if (currentWordInd === 0 || words[currentWordInd - 1].correct) {
-        return;
+const goToPreviousWord = () => {
+    if (currentWord === 0 || correct[currentWord - 1]) {
+        return
     }
 
-    currentWordInd--;
-    currentWord = words[currentWordInd];
-    input.value = currentWord.typed;
-    shiftLetters();
-}
-
-export const clearPreviousWord = () => {
-    if (currentWordInd === 0 || words[currentWordInd - 1].correct) {
-        return;
-    }
-
-    currentWordInd--;
-    currentWord = words[currentWordInd];
-    clearCurrentWord();
+    currentWord--
+    input.value = typed[currentWord]
+    render()
 }
 
 const startComposition = () => {
-    isComposing = true;
+    isComposing = true
 }
 
 const endComposition = () => {
-    isComposing = false;
-    update();
+    isComposing = false
+    update()
 }
 
-const update = () => {
-    caret.classList.add('typing');
-    clearTimeout(typingTimeout);
-    typingTimeout = setTimeout(() => {
-        caret.classList.remove('typing');
-    }, 500);
-
+export const update = () => {
     if (isComposing) {
-        return;
+        return
     }
 
     if (gameState === 'armed') {
-        gameState = 'running';
-        startTimer();
+        gameState = 'running'
+        startTimer()
     }
 
-    let typed = input.value;
-    let newLetters = typed.length - currentWord.typed.length;
+    let newLetters = input.value.length - typed[currentWord].length
     for (let i = 0; i < newLetters; i++) {
-        let index = currentWord.typed.length + i;
-        let extra = index >= currentWord.word.length;
-        if (extra) {
-            let extraLetter = document.createElement('span');
-            extraLetter.className = 'letter extra incorrect';
-            extraLetter.textContent = typed[index];
-            currentWord.div.appendChild(extraLetter);
-            currentWord.extra.push(extraLetter);
-        } else {
-            let letter = currentWord.letters[index];
-            if (typed[index] === currentWord.word[index]) {
-                letter.className = 'letter correct';
-                correctCharacters++;
-            } else {
-                letter.className = 'letter incorrect';
-                letter.textContent = typed[index];
-            }
+        let index = typed[currentWord].length + i
+        if (index < words[currentWord].length
+            && typed[currentWord][index] === words[currentWord][index]) {
+            correctCharacters++
         }
-        charactersTyped++;
+        charactersTyped++
     }
-    currentWord.typed = typed;
 
-    shiftLetters();
-    updateStats();
+    typed[currentWord] = input.value
+
+    render()
+    updateStats()
 }
 
 const startTimer = () => {
     if (timerInterval) {
-        clearInterval(timerInterval);
+        clearInterval(timerInterval)
     }
 
     timerInterval = setInterval(() => {
-        timeLeft--;
-        updateStats();
+        timeLeft--
+        updateStats()
 
         if (timeLeft === 0) {
-            endGame();
+            endGame()
         }
-    }, 1000);
+    }, 1000)
 }
 
 const updateStats = () => {
-    timeStat.textContent = String(timeLeft);
-    wordsStat.textContent = String(wordCount === 0);
-    let timePassed = settings.timeLimit - timeLeft;
-    wpmStat.textContent = String(timePassed === 0 ? 0 : Math.floor(wordCount / (timePassed / 60)));
-    accuracyStat.textContent = String(charactersTyped === 0 ? 0 : Math.round(correctCharacters / charactersTyped * 100));
+    let timePassed = settings.timeLimit - timeLeft
+    wpm = timePassed === 0 ? 0 : Math.floor(wordCount / (timePassed / 60))
+    accuracy = charactersTyped === 0 ? 0 : Math.round(correctCharacters / charactersTyped * 100)
+    renderStats()
 }
