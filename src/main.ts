@@ -1,4 +1,4 @@
-import { backspace, backspaceWord, exitGame, endWord, gameState, update, endGameOver, startGame, resetGame } from './game.ts'
+import { backspace, backspaceWord, exitGame, endWord, gameState, update, endGameOver, resetGame } from './game.ts'
 import { moveCaretToEnd } from './ui/ui.ts'
 import { goToNextCommand, goToPreviousCommand, runCommand } from './command.ts'
 import { body, input } from './ui/dom.ts'

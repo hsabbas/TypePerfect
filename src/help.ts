@@ -101,7 +101,7 @@ const helpMessages: HelpMessages = {
     'default': {
         title: 'Available Commands',
         lines: [
-            'start [seconds] - Start a new game',
+            '[start] [seconds] - Start a new game',
             'color &lt;name&gt; &lt;hex&gt; - Change colors',
             'theme &lt;light|dark&gt; - Switch theme',
             'font &lt;size&gt; - Change font size',
