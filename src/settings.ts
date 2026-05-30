@@ -26,7 +26,7 @@ interface Settings {
 
 export const defaults: Settings = {
     timeLimit: 60,
-    slideSpeed: 'fast',
+    slideSpeed: 'medium',
     slideOnWord: false,
     caretStyle: 'bar',
     light: {

@@ -14,7 +14,7 @@ const updateUI = () => {
             letterContainer.style.transitionDuration = '0.15s'
             break
         case 'fast':
-            letterContainer.style.transitionDuration = '0.05s'
+            letterContainer.style.transitionDuration = '0.1s'
             break
         case 'none':
             letterContainer.style.transitionDuration = '0s'
