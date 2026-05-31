@@ -172,7 +172,7 @@ body {
     left: 50%;
     margin-left: 32px;
     transform: translateY(-50%);
-    font-size: var(--ouput-font-size);
+    font-size: var(--help-font-size);
     white-space: pre;
 }
 
