@@ -104,7 +104,7 @@ const helpMessages: HelpMessages = {
             '[start] [seconds] - Start a new game',
             'color &lt;name&gt; &lt;hex&gt; - Change colors',
             'theme &lt;light|dark&gt; - Switch theme',
-            'font &lt;size&gt; - Change font size',
+            'font size &lt;area&gt; &lt;size&gt; - Change font size',
             'caret &lt;style&gt; - Choose a caret style',
             'slide [speed] [trigger] - Customize how the typing row slides',
             'seed &lt;seed&gt; - Set the seed for word generation',
