@@ -1,5 +1,5 @@
 import { input } from "./ui/dom"
-import { addWordElements, render, renderStats, resetRenderer } from "./renderer"
+import { addWordElements, removeWordElements, render, renderStats, resetRenderer, startRenderer } from "./renderer"
 import { resetRNG } from "./rng"
 import { saveSettings, settings } from "./settings"
 import { displayGame, exitGameOver, leaveGameDisplay, showGameOver } from "./ui/ui"
@@ -28,8 +28,9 @@ export const startGame = (seconds: number) => {
     updateStats()
     currentWord = 0
     resetRNG()
-    addWords(150)
+    addWords(15)
     displayGame()
+    startRenderer()
     render()
 }
 
@@ -90,7 +91,9 @@ const addWords = (count: number) => {
 }
 
 const removeWords = (count: number) => {
+    removeWordElements(count)
     words = words.slice(count)
+    typed = typed.slice(count)
     currentWord -= count
 }
 

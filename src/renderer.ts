@@ -15,7 +15,9 @@ let wordElems: WordElements[] = []
 export const startRenderer = () => {
     spaceTaker.style.width = '0'
     spaceTaker.style.opacity = '0'
-    letterContainer.appendChild(spaceTaker)
+    if (!letterContainer.contains(spaceTaker)) {
+        letterContainer.appendChild(spaceTaker)
+    }
 }
 
 export const resetRenderer = () => {
@@ -33,6 +35,10 @@ export const addWordElements = (newWords: string[]) => {
 }
 
 const addWord = (word: string) => {
+    if (!letterContainer.contains(spaceTaker)) {
+        letterContainer.appendChild(spaceTaker)
+    }
+
     let wordDiv = document.createElement('div')
     wordDiv.className = 'word'
     let letters = []
@@ -65,6 +71,7 @@ export const removeWordElements = (count: number) => {
         wordElems[i].div.remove()
         spaces[i].remove()
     }
+    wordElems = wordElems.slice(count)
     spaces = spaces.slice(count)
 }
 
