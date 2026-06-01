@@ -8,7 +8,7 @@ export const setSeed = (s: number): boolean => {
     }
 
     if (s === 0) {
-        return true
+        return false
     }
 
     seed = s
