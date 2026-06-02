@@ -28,7 +28,7 @@ export const startGame = (seconds: number) => {
     updateStats()
     currentWord = 0
     resetRNG()
-    addWords(15)
+    addWords(150)
     displayGame()
     startRenderer()
     render()
