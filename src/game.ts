@@ -94,6 +94,7 @@ const removeWords = (count: number) => {
     removeWordElements(count)
     words = words.slice(count)
     typed = typed.slice(count)
+    correct = correct.slice(count)
     currentWord -= count
 }
 
